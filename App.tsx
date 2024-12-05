@@ -6,7 +6,10 @@ import {
   TextInput,
   Button,
   FlatList,
+  Alert,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 interface ITodo {
@@ -19,46 +22,63 @@ export default function App() {
   const [todoList, setTodoList] = useState<ITodo[]>([]);
 
   const handleAddTodo = () => {
-    if (!todo) return;
+    if (!todo) {
+      Alert.alert("Lỗi input", "Todo không được để trống", [
+        { text: "Xác nhận", onPress: () => console.log("is pressed!") },
+      ]);
+      return;
+    }
 
     setTodoList([...todoList, { id: todoList.length + 1, name: todo }]);
     setTodo("");
   };
 
   const handleDeleteTodo = (id: number) => {
-    const newTodoList = todoList.filter((item) => item.id !== id);
-    setTodoList(newTodoList);
+    Alert.alert("Xác nhận xoá", "Bạn chắc chắn muốn xoá todo này?", [
+      { text: "Huỷ", style: "cancel" },
+
+      {
+        text: "Xác nhận",
+        style: "destructive",
+        onPress: () => {
+          const newTodoList = todoList.filter((item) => item.id !== id);
+          setTodoList(newTodoList);
+        },
+      },
+    ]);
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <Text style={styles.header}>Todo App</Text>
-      {/* Form */}
-      <View style={styles.body}>
-        <TextInput
-          value={todo}
-          style={styles.todoInput}
-          onChangeText={(value) => setTodo(value)}
-        />
-        <Button color="blue" title="Add todo" onPress={handleAddTodo} />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        {/* Header */}
+        <Text style={styles.header}>Todo App</Text>
+        {/* Form */}
+        <View style={styles.body}>
+          <TextInput
+            value={todo}
+            style={styles.todoInput}
+            onChangeText={(value) => setTodo(value)}
+          />
+          <Button color="blue" title="Add todo" onPress={handleAddTodo} />
+        </View>
+        {/* Todo list */}
+        <View style={styles.body}>
+          <Text style={styles.texts}>List to do: {todo}</Text>
+          <FlatList
+            keyExtractor={(item) => item.id + ""}
+            data={todoList}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity onPress={() => handleDeleteTodo(item.id)}>
+                  <Text style={styles.todoItem}>{item.name}</Text>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </View>
       </View>
-      {/* Todo list */}
-      <View style={styles.body}>
-        <Text style={styles.texts}>List to do: {todo}</Text>
-        <FlatList
-          keyExtractor={(item) => item.id + ""}
-          data={todoList}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => handleDeleteTodo(item.id)}>
-                <Text style={styles.todoItem}>{item.name}</Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
