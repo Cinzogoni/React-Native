@@ -12,6 +12,8 @@ import {
   Keyboard,
 } from "react-native";
 
+import Feather from "@expo/vector-icons/Feather";
+
 interface ITodo {
   id: number;
   name: string;
@@ -53,8 +55,9 @@ export default function App() {
       <View style={styles.container}>
         {/* Header */}
         <Text style={styles.header}>Todo App</Text>
+
         {/* Form */}
-        <View style={styles.body}>
+        <View style={styles.form}>
           <TextInput
             value={todo}
             style={styles.todoInput}
@@ -62,8 +65,9 @@ export default function App() {
           />
           <Button color="blue" title="Add todo" onPress={handleAddTodo} />
         </View>
+
         {/* Todo list */}
-        <View style={styles.body}>
+        <View style={styles.todo}>
           <Text style={styles.texts}>List to do: {todo}</Text>
           <FlatList
             keyExtractor={(item) => item.id + ""}
@@ -71,7 +75,10 @@ export default function App() {
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity onPress={() => handleDeleteTodo(item.id)}>
-                  <Text style={styles.todoItem}>{item.name}</Text>
+                  <View style={styles.todoGroup}>
+                    <Text style={styles.todoItem}>{item.name}</Text>
+                    <Feather name="trash" size={24} color="white" />
+                  </View>
                 </TouchableOpacity>
               );
             }}
@@ -87,8 +94,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
+    margin: 10,
   },
 
   header: {
@@ -97,12 +103,16 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "600",
     textAlign: "center",
-    paddingVertical: 15,
-    marginBottom: 15,
+    paddingVertical: 10,
   },
 
-  body: {
-    margin: 10,
+  form: {
+    marginBottom: 10,
+  },
+
+  todo: {
+    marginBottom: 10,
+    flex: 1,
   },
 
   texts: {
@@ -117,12 +127,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  todoItem: {
-    fontSize: 20,
-    marginBottom: 15,
-    padding: 5,
+  todoGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "blue",
     borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+
+  todoItem: {
+    fontSize: 20,
     color: "white",
   },
 });
