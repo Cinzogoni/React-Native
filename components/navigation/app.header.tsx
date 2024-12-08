@@ -16,7 +16,7 @@ const AppHeader = () => {
         onPress={() => navigation.openDrawer()}
       />
       <Text style={[GlobalStyles.globalFont, styles.title]}>
-        Ngôn Ngữ Lập Trình
+        Ứng dụng nhắc việc
       </Text>
     </View>
   );

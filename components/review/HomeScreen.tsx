@@ -14,6 +14,8 @@ import { useState } from "react";
 import GlobalStyles from "../global/styles/styles";
 import CreateModal from "./Modal";
 
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 interface IReview {
   id: number;
   title: string;
@@ -22,28 +24,23 @@ interface IReview {
 
 function HomeScreen() {
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
-  const [reviews, setReviews] = useState<IReview[]>([
-    { id: 1, title: "React.js", rate: 5 },
-    { id: 2, title: "React Native", rate: 5 },
-    { id: 3, title: "Javascript", rate: 4 },
-    { id: 4, title: "Typescript", rate: 5 },
-    { id: 5, title: "Java", rate: 4 },
-    { id: 6, title: "Python", rate: 5 },
-    { id: 7, title: "C#", rate: 5 },
-    { id: 8, title: "C+", rate: 4 },
-    { id: 9, title: "C++", rate: 4 },
-    { id: 10, title: "PHP", rate: 4 },
-  ]);
+  const [reviews, setReviews] = useState<IReview[]>([]);
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const addNew = (item: IReview) => {
+    setReviews([...reviews, item]);
+  };
+
   return (
     <View style={styles.wrapper}>
       <Text style={[GlobalStyles.globalFont, styles.title]}>Danh sách:</Text>
 
       <View style={styles.button}>
-        <Button
-          color="grey"
-          title="Thêm"
+        <AntDesign
+          name="plussquareo"
+          size={60}
+          color="black"
           onPress={() => setModalVisible(true)}
         />
       </View>
@@ -71,6 +68,7 @@ function HomeScreen() {
       <CreateModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        addNew={addNew}
       />
     </View>
   );
@@ -89,7 +87,8 @@ const styles = StyleSheet.create({
 
   button: {
     marginHorizontal: 7.5,
-    marginBottom: 30,
+    marginBottom: 22.5,
+    alignItems: "center",
   },
 
   box: {
