@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  Button,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +12,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { useState } from "react";
 
 import GlobalStyles from "../global/styles/styles";
+import CreateModal from "./Modal";
 
 interface IReview {
   id: number;
@@ -33,9 +35,19 @@ function HomeScreen() {
     { id: 10, title: "PHP", rate: 4 },
   ]);
 
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.wrapper}>
       <Text style={[GlobalStyles.globalFont, styles.title]}>Danh sách:</Text>
+
+      <View style={styles.button}>
+        <Button
+          color="grey"
+          title="Thêm"
+          onPress={() => setModalVisible(true)}
+        />
+      </View>
+
       <View style={styles.frame}>
         <FlatList
           data={reviews}
@@ -55,6 +67,11 @@ function HomeScreen() {
           }}
         />
       </View>
+
+      <CreateModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 }
@@ -68,6 +85,11 @@ const styles = StyleSheet.create({
 
   frame: {
     flex: 1,
+  },
+
+  button: {
+    marginHorizontal: 7.5,
+    marginBottom: 30,
   },
 
   box: {

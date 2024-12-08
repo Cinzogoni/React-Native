@@ -10,11 +10,11 @@ import {
 
 type DetailScreenRouteProp = RouteProp<RootStackParamList, "Detail">;
 
-interface Props {
+interface IProps {
   route: DetailScreenRouteProp;
 }
 
-function DetailScreen({ route }: Props) {
+function DetailScreen({ route }: IProps) {
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
   const { id, title, rate } = route.params || { id: 0, title: "", rate: 0 };
 
